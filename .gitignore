@@ -1,0 +1,22 @@
+# Ignore everything by default
+*
+
+# Allow directories to be searched
+!*/
+
+# Allow Python source files
+!*.py
+
+# Essential documentation and setup
+!README.md
+!requirements.txt
+!.gitignore
+
+# Ignore specific development/data files even if they match patterns above
+venv/
+__pycache__/
+*.xlsx
+*.xls
+*.docx
+*.pdf
+.streamlit/

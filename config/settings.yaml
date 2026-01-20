@@ -1,0 +1,37 @@
+crawler:
+  base_url: "https://system-tradedata.pro/api"
+  sleep_time: 3.6  # giây
+  max_items: 40
+  max_pages: 10
+  
+processing:
+  target_column: "price" # Tên cột cần xử lý chính
+  max_excel_row_height: 40
+  padding_size: 2             # Khoảng trống nhỏ cho cột (như bạn đã đề cập trước đó)
+  max_rows_per_file: 20
+
+columns_to_extract:
+  - "date"
+  - "originCountryStd"
+  - "exporterOld"
+  - "importerOld"
+  - "hsCode"
+  - "product"
+  - "quantity"
+  - "quantityUnit"
+  - "value"
+  - "valueUnit"
+  - "price"
+
+column_mapping:
+  "date": "Date"
+  "originCountryStd": "Origin Country"
+  "exporterOld": "Exporter"
+  "importerOld": "Importer"
+  "hsCode": "HsCode"
+  "product": "Product"
+  "quantity": "Quantity"
+  "quantityUnit": "QuantityUnit"
+  "value": "Value"
+  "valueUnit": "ValueUnit"
+  "price": "Unit Price"

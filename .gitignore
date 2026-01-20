@@ -1,0 +1,21 @@
+# 1. Bỏ qua thư mục ảo (Virtual Env)
+venv/
+env/
+myenvy/
+.env
+
+# 2. Bỏ qua file biên dịch Python (Rác)
+__pycache__/
+*.pyc
+
+# 3. QUAN TRỌNG: Bỏ qua file chứa mật khẩu thật
+.streamlit/secrets.toml
+
+# 4. Bỏ qua file log và file Excel kết quả (để không làm nặng Git)
+logs/
+*.log
+*.xlsx
+*.csv
+
+# 5. Bỏ qua các file hệ thống
+.DS_Store

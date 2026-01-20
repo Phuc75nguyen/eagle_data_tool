@@ -1,13 +1,33 @@
-## This is a data tool for Eagle Pacific
+# Eagle Pacific Data Tool 🦅
 
-## Cài đặt
+A standardized trade data processing tool for Eagle Pacific Logistics.
 
-1. Cài đặt thư viện:
+## Setup Instructions
+
+1. **Create Virtual Environment**:
+   ```powershell
+   python -m venv venv
+   ```
+
+2. **Activate Environment**:
+   - Windows PowerShell: `.\venv\Scripts\Activate.ps1`
+   - Windows CMD: `.\venv\Scripts\activate.bat`
+
+3. **Install Dependencies**:
+   ```powershell
    pip install -r requirements.txt
+   ```
+4. **Implement your Credential**:
+   - Rename file `secrets.toml.example` -> `.streamlit/secrets.toml`
+   - Add Username/Password into file secrets.toml
 
-2. Cấu hình:
-   - Đổi tên `secrets.toml.example` -> `.streamlit/secrets.toml`
-   - Điền Username/Password vào file secrets.toml
-
-3. Chạy ứng dụng:
+5. **Run Application**:
+   ```powershell
    streamlit run app.py
+   ```
+
+## Project Structure
+- `app.py`: Main Streamlit UI.
+- `processor.py`: Core logic for data cleaning, filtering, and calculation.
+- `requirements.txt`: Python package dependencies.
+- `venv/`: Local virtual environment.

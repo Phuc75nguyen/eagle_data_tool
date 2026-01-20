@@ -1,4 +1,4 @@
-# 1. Bỏ qua thư mục ảo (Virtual Env)
+# 1. Ignore (Virtual Env)
 venv/
 env/
 myenvy/
@@ -8,14 +8,32 @@ myenvy/
 __pycache__/
 *.pyc
 
-# 3. QUAN TRỌNG: Bỏ qua file chứa mật khẩu thật
-.streamlit/secrets.toml
-
 # 4. Bỏ qua file log và file Excel kết quả (để không làm nặng Git)
 logs/
 *.log
-*.xlsx
-*.csv
 
 # 5. Bỏ qua các file hệ thống
 .DS_Store
+
+# Ignore everything by default
+*
+
+# Allow directories to be searched
+!*/
+
+# Allow Python source files
+!*.py
+
+# Essential documentation and setup
+!README.md
+!requirements.txt
+!.gitignore
+
+# Ignore specific development/data files even if they match patterns above
+venv/
+__pycache__/
+*.xlsx
+*.xls
+*.docx
+*.pdf
+.streamlit/

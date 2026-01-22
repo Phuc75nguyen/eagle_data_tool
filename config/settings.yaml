@@ -1,14 +1,14 @@
 crawler:
   base_url: "https://system-tradedata.pro/api"
   sleep_time: 3.6  # giây
-  max_items: 40
-  max_pages: 10
+  max_items: null
+  max_pages: null
   
 processing:
-  target_column: "price" # Tên cột cần xử lý chính
+  target_column: "price"
   max_excel_row_height: 40
-  padding_size: 2             # Khoảng trống nhỏ cho cột (như bạn đã đề cập trước đó)
-  max_rows_per_file: 20
+  padding_size: 2
+  max_rows_per_file: 1000
 
 columns_to_extract:
   - "date"

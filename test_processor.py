@@ -1,5 +1,5 @@
 import pandas as pd
-from processor import clean_product_name, standardize_data, filter_by_product
+from src.processor import clean_product_name, standardize_data, filter_by_product
 
 # 1. Test clean_product_name
 test_text = "CH00016#&AMP;FABRIC 100% COTTON"

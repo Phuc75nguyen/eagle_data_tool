@@ -1,0 +1,585 @@
+:root {
+    --rd-bp-text: var(--color-rd-darkblue);
+    --rd-bp-text-muted: rgba(95, 107, 124, 0.7);
+    --rd-bp-surface: var(--color-rd-white);
+    --rd-bp-surface-elevated: rgba(243, 246, 249, 0.85);
+    --rd-bp-border: rgba(143, 153, 168, 0.3);
+    --rd-bp-focus-ring: var(--color-rd-blue);
+    --rd-bp-primary: var(--color-rd-blue);
+    --rd-bp-primary-contrast: #ffffff;
+    --rd-bp-primary-soft: rgba(65, 119, 172, 0.12);
+    --rd-bp-danger: var(--color-rd-flashred);
+    --rd-bp-warning: var(--color-rd-orange);
+    --rd-bp-success: var(--color-rd-flashgreen);
+    --rd-bp-tree-selected-text: #ffffff;
+    --rd-bp-tree-connector: rgba(57, 75, 89, 0.2);
+    --rd-bp-popover-bg: var(--color-rd-white);
+    --rd-bp-popover-border: rgba(57, 75, 89, 0.15);
+    --rd-bp-input-bg: #ffffff;
+    --rd-bp-input-text: var(--color-rd-darkblue);
+    --rd-bp-control-indicator: var(--color-rd-blue);
+}
+
+.dark,
+.bp5-dark {
+    --rd-bp-text: var(--color-rd-white);
+    --rd-bp-text-muted: var(--color-rd-lightgrey);
+    --rd-bp-surface: var(--color-rd-dark);
+    --rd-bp-surface-elevated: rgba(57, 75, 89, 0.65);
+    --rd-bp-border: rgba(182, 196, 196, 0.25);
+    --rd-bp-focus-ring: var(--color-rd-flashturq);
+    --rd-bp-primary: var(--color-rd-flashturq);
+    --rd-bp-primary-contrast: var(--color-rd-darkblue);
+    --rd-bp-primary-soft: rgba(71, 201, 175, 0.12);
+    --rd-bp-danger: var(--color-rd-flashred);
+    --rd-bp-warning: var(--color-rd-amber);
+    --rd-bp-success: var(--color-rd-flashgreen);
+    --rd-bp-tree-selected-text: var(--color-rd-darkblue);
+    --rd-bp-tree-connector: rgba(255, 255, 255, 0.18);
+    --rd-bp-popover-bg: var(--color-rd-darkblue);
+    --rd-bp-popover-border: rgba(71, 201, 175, 0.3);
+    --rd-bp-input-bg: var(--color-rd-dark);
+    --rd-bp-input-text: var(--color-rd-flashgreen);
+    --rd-bp-control-indicator: var(--color-rd-flashturq);
+}
+
+/* Menu */
+.bp5-dark .bp5-menu {
+    @apply bg-rd-darkblue;
+}
+
+body.bp5-dark .bp5-menu {
+    @apply bg-rd-dark;
+}
+
+/* Popover */
+body.bp5-dark .bp5-popover-content {
+    @apply bg-rd-dark;
+}
+
+/* Dialog */
+
+.bp5-dark .bp5-dialog .ui-typography {
+    @apply text-rd-white;
+}
+
+/* Buttons */
+.bp5-button:not([class*="bp5-intent-"]) {
+    color: var(--rd-bp-text);
+}
+
+.bp5-tree-node-selected .bp5-button:not([class*="bp5-intent-"]) {
+    @apply text-rd-white;
+}
+
+#baseTanStackTable .bp5-button:not([class*="bp5-intent-"]):disabled,
+#baseTanStackTable .bp5-button:not([class*="bp5-intent-"]).bp5-disabled {
+    @apply !bg-transparent;
+}
+
+.bp5-button .bp5-icon,
+.bp5-button>.bp5-icon {
+    color: inherit;
+}
+
+.bp5-button-group .bp5-button:not([class*="bp5-intent-"]) {
+    @apply dark:bg-rd-dark dark:text-rd-white dark:hover:bg-rd-dark;
+}
+
+.bp5-button-group .bp5-button.toolButton {
+    background-color: transparent;
+}
+
+.bp5-button-group .bp5-button .bp5-icon {
+    @apply dark:text-rd-white;
+}
+
+.bp5-button-group .bp5-button.vimModeButton.vim-active {
+    @apply bg-rd-blue hover:bg-rd-blue/80 dark:bg-rd-flashturq dark:text-rd-darkblue dark:hover:bg-rd-flashturq/80 text-white;
+}
+
+.bp5-button-group .bp5-button.vimModeButton:not(.vim-active) {
+    @apply dark:text-rd-white;
+}
+
+.bp5-button.bp5-intent-primary {
+    @apply bg-rd-blue hover:bg-rd-blue/80 text-white;
+    outline: none;
+}
+
+.bp5-button.bp5-intent-primary.bp5-disabled,
+.bp5-button.bp5-intent-primary:disabled {
+    @apply opacity-70;
+}
+
+.dark .bp5-button.bp5-intent-primary,
+.bp5-dark .bp5-button.bp5-intent-primary {
+    @apply bg-rd-flashturq text-rd-darkblue dark:text-rd-white hover:bg-rd-flashturq/80;
+}
+
+.bp5-button.bp5-intent-primary.bp5-minimal {
+    @apply text-rd-blue hover:text-rd-blue bg-transparent hover:bg-[#4177ac50] hover:opacity-85;
+}
+
+.dark .bp5-button.bp5-intent-primary.bp5-minimal {
+    @apply text-rd-flashturq;
+}
+
+.bp5-button.bp5-intent-danger {
+    @apply bg-rd-flashred hover:bg-rd-flashred/90 text-white hover:opacity-85;
+}
+
+.bp5-button.bp5-intent-danger.bp5-disabled,
+.bp5-button.bp5-intent-danger:disabled {
+    @apply opacity-70;
+}
+
+.bp5-dialog.bp5-alert .bp5-icon[class*="bp5-intent-"] {
+    @apply my-auto h-full;
+}
+
+.bp5-icon.bp5-intent-danger {
+    @apply text-rd-flashred;
+}
+
+.bp5-button.bp5-minimal {
+    @apply bg-transparent shadow-none hover:shadow-none;
+}
+
+.bp5-button.bp5-minimal.bp5-intent-danger {
+    @apply text-rd-flashred hover:text-rd-flashred bg-transparent hover:opacity-85;
+}
+
+.bp5-button.bp5-minimal.bp5-intent-success,
+.bp5-button.bp5-minimal.bp5-intent-warning,
+.bp5-button.bp5-minimal.bp5-intent-primary.bp5-fill,
+.bp5-popover2-target .bp5-button.bp5-minimal {
+    @apply shadow-none dark:bg-transparent;
+}
+
+.bp5-button.bp5-disabled.bp5-minimal {
+    @apply hover:shadow-none;
+}
+
+.bp5-button:not([class*="bp5-intent-"]):disabled,
+.bp5-button:not([class*="bp5-intent-"]).bp5-disabled {
+    @apply cursor-not-allowed shadow-none;
+    background-color: rgba(211, 216, 222, 0.2);
+    color: var(--rd-bp-text-muted);
+}
+
+.dark .bp5-button:not([class*="bp5-intent-"]):disabled,
+.dark .bp5-button:not([class*="bp5-intent-"]).bp5-disabled {
+    color: var(--color-rd-lightgrey);
+}
+
+.bp5-popover2-transition-container .bp5-popover2.bp5-dark .bp5-popover2-content .bp5-button {
+    @apply bg-rd-darkblue;
+}
+
+.bp5-button.bp5-intent-primary,
+.bp5-dialog.bp5-dark .bp5-button.bp5-intent-primary {
+    @apply bg-rd-blue dark:bg-rd-flashturq dark:text-rd-darkblue text-white;
+}
+
+.bp5-dialog-container.bp5-overlay-content .bp5-dialog.bp5-dark .bp5-button.actionBtn.bp5-active,
+.bp5-button:not([class*="bp5-intent-"]).actionBtn.bp5-active {
+    @apply bg-rd-flashturq text-rd-white hover:bg-rd-flashturq/80 dark:bg-rd-flashturq dark:text-rd-darkblue;
+}
+
+.bp5-button:not([class*="bp5-intent-"]).actionBtn .bp5-icon.bp5-icon-import {
+    @apply text-rd-white;
+}
+
+.bp5-dark .bp5-navbar {
+    @apply shadow-none;
+}
+
+.bp5-navbar {
+    background-color: var(--color-rd-darkblue);
+}
+
+.bp5-navbar .bp5-icon,
+.bp5-navbar-group .coreHeader .bp5-button>.bp5-icon {
+    @apply m-0 text-white;
+}
+
+.FileTree .globalFileRightIcon.bp5-button.bp5-minimal:disabled {
+    @apply text-rd-blue;
+}
+
+.FileTree .fileRightIcon.bp5-button:not([class*="bp5-intent-"]).bp5-minimal.bp5-small .bp5-icon.bp5-icon-lock {
+    @apply dark:text-rd-white;
+}
+
+.FileTree .fileRightIcon.bp5-button:not([class*="bp5-intent-"]).bp5-minimal.bp5-small:disabled .bp5-icon.bp5-icon-lock {
+    @apply dark:text-rd-white/50;
+}
+
+.index-module_button__0-ptH {
+    @apply !p-1;
+}
+
+.index-module_button__0-ptH.active {
+    @apply bg-rd-darkblue dark:bg-rd-lightgrey/40 rounded-md;
+}
+
+.index-module_button__0-ptH.inactive {
+    @apply fill-rd-darkblue/60 dark:fill-rd-lightgrey/80;
+}
+
+/* Dialogs */
+.bp5-dialog {
+    background-color: var(--rd-bp-surface);
+    color: var(--rd-bp-text);
+}
+
+.ui-file-wizard-v2-portal .bp5-overlay {
+    /* WHY: Wizard overlay must stay above sticky DatabaseView panels to avoid corner artifacts. */
+    @apply !z-[120];
+}
+
+.ui-file-wizard-v2-backdrop {
+    @apply bg-black/50 backdrop-blur-sm;
+}
+
+.bp5-dialog-container .bp5-dialog.bp5-alert {
+    background-color: var(--rd-bp-surface);
+    color: var(--rd-bp-text);
+}
+
+.bp5-dark .bp5-dialog .bp5-dialog-footer-fixed,
+.bp5-dark .bp5-dialog-container.bp5-overlay-content .bp5-dialog,
+.bp5-dark .bp5-dialog-step-container,
+.bp5-dark .bp5-dialog-step-container .bp5-dialog-step,
+.bp5-dark .bp5-dialog-step-container.bp5-active,
+.bp5-dark .bp5-dialog-step-container.bp5-active .bp5-dialog-step,
+.bp5-dark .bp5-multistep-dialog-left-panel,
+.bp5-dark .bp5-multistep-dialog-right-panel,
+.bp5-dark .bp5-multistep-dialog-panels .bp5-dialog-step-viewed {
+    background-color: var(--rd-bp-surface);
+}
+
+.bp5-active.bp5-dialog-step-viewed .bp5-dialog-step-icon {
+    background-color: var(--rd-bp-primary) !important;
+}
+
+.bp5-active.bp5-dialog-step-viewed .bp5-dialog-step-title {
+    color: var(--rd-bp-primary) !important;
+}
+
+.bp5-dialog.processSuccess>.bp5-dialog-header {
+    background-color: var(--rd-bp-primary) !important;
+}
+
+.bp5-dialog.processSuccess>.bp5-dialog-header .bp5-icon,
+.bp5-dialog.processSuccess>.bp5-dialog-header .bp5-heading,
+.bp5-dialog.processError>.bp5-dialog-header .bp5-icon,
+.bp5-dialog.processError>.bp5-dialog-header .bp5-heading {
+    @apply !text-white;
+}
+
+.bp5-dialog.processError>.bp5-dialog-header {
+    @apply bg-rd-flashred;
+}
+
+.bp5-dialog.processWarning>.bp5-dialog-header {
+    @apply bg-rd-orange;
+}
+
+.bp5-dialog.processWarning>.bp5-dialog-header .bp5-heading {
+    @apply text-rd-darkblue;
+}
+
+.bp5-multistep-dialog-right-panel {
+    @apply flex flex-col justify-between;
+}
+
+.addDialogPanel .bp5-dialog-body-scroll-container,
+.editDialogPanel .bp5-dialog-body-scroll-container {
+    overflow: unset;
+}
+
+/* Inputs, selects, controls */
+.bp5-input,
+.bp5-select select,
+.bp5-html-select select {
+    background-color: var(--rd-bp-input-bg);
+}
+
+.bp5-input.bp5-fill {
+    @apply dark:bg-rd-dark dark:text-rd-flashgreen;
+}
+
+.bp5-input-group.bp5-intent-primary .bp5-input {
+    box-shadow:
+        0 0 0 0 #47c9af00,
+        0 0 0 0 #47c9af00,
+        inset 0 0 0 1px #47c9af,
+        inset 0 0 0 1px rgba(17, 20, 24, 0.2),
+        inset 0 1px 1px rgba(17, 20, 24, 0.5);
+}
+
+.bp5-input-group .bp5-input-action {
+    display: flex;
+    align-items: center;
+}
+
+.updateUserPassword .bp5-input-group .bp5-input-action {
+    @apply top-1;
+}
+
+.valueInput .bp5-input-action,
+.nameInput .bp5-input-action {
+    @apply -translate-y-1/2;
+}
+
+.bp5-portal .projectMenu .bp5-input-group .bp5-input-action {
+    @apply dark:border-rd-lightgrey/40 top-1;
+}
+
+.signInPasswordInput .bp5-input-group .bp5-input-action,
+.signUpPasswordInput .bp5-input-group .bp5-input-action {
+    @apply absolute top-[45%] right-2;
+}
+
+.newPasswordInput .bp5-input-group>.bp5-input-action {
+    @apply top-1/2 right-2 -translate-y-1/5;
+}
+
+.bp5-control.bp5-radio input:checked~.bp5-control-indicator {
+    @apply !bg-rd-blue;
+}
+
+.bp5-dark .bp5-control.bp5-radio input:checked~.bp5-control-indicator {
+    @apply !bg-rd-flashturq;
+}
+
+.bp5-control input:not(:disabled):active:checked~.bp5-control-indicator {
+    @apply !bg-rd-blue;
+}
+
+.bp5-dark .bp5-control input:not(:disabled):active:checked~.bp5-control-indicator {
+    @apply !bg-rd-flashturq;
+}
+
+.bp5-control input:focus~.bp5-control-indicator {
+    outline: 2px solid var(--rd-bp-focus-ring);
+}
+
+.bp5-dark .bp5-control input:focus~.bp5-control-indicator {
+    outline: 2px solid var(--rd-bp-focus-ring);
+}
+
+.bp5-control.bp5-switch input:checked~.bp5-control-indicator,
+.bp5-control.bp5-switch:hover input:checked~.bp5-control-indicator {
+    @apply bg-rd-blue dark:bg-rd-flashturq;
+}
+
+#systemMaintenanceToggle .bp5-control.bp5-switch input:checked~.bp5-control-indicator {
+    @apply bg-rd-amber;
+}
+
+.bp5-control.bp5-switch input~.bp5-control-indicator {
+    @apply outline-0;
+}
+
+.env-select.bp5-html-select select {
+    @apply pl-7;
+}
+
+select#editMode {
+    @apply hidden appearance-none overflow-auto;
+}
+
+#admin-system-users .bp5-html-select select,
+#admin-system-users .bp5-select select {
+    @apply dark:bg-rd-dark dark:text-rd-white !rounded-lg !border !border-solid bg-white;
+}
+
+.auth .bp5-input-group .bp5-input {
+    @apply dark:border-rd-lightgrey/60 border border-solid border-transparent;
+}
+
+.auth .bp5-input-group .bp5-input-action .bp5-icon {
+    @apply -translate-x-3 translate-y-8;
+}
+
+/* Popovers & tooltips */
+.bp5-popover2-transition-container {
+    @apply !z-50;
+}
+
+.ui-select-with-search__portal .bp5-popover2-transition-container,
+.ui-select-with-search__portal .bp5-popover-transition-container {
+    /* WHY: Environment selector popovers must stay above sticky database headers/panels. */
+    @apply !z-[90];
+}
+
+.bp5-popover2 .bp5-popover2-content,
+.bp5-tooltip.bp5-popover .bp5-popover-content {
+    background-color: var(--rd-bp-popover-bg);
+    color: var(--rd-bp-text);
+}
+
+.bp5-tooltip.bp5-popover .bp5-popover-arrow-fill,
+.bp5-popover.bp5-popover2 .bp5-popover-arrow-fill,
+.bp5-tooltip2 .bp5-popover2-arrow-fill {
+    fill: var(--rd-bp-popover-bg);
+}
+
+.dark.bp5-tooltip.bp5-popover .bp5-popover-arrow-fill {
+    fill: var(--rd-bp-popover-bg);
+}
+
+/* Tabs */
+.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab:not([aria-disabled="true"]):hover,
+.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list .bp5-tab[aria-selected="true"],
+.commonTabs .bp5-icon.bp5-intent-primary,
+.bp5-icon-large.bp5-intent-primary,
+.bp5-icon-standard.bp5-intent-primary {
+    @apply text-rd-blue dark:text-rd-white;
+}
+
+.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list .bp5-tab[aria-selected="false"] {
+    @apply hover:text-rd-blue dark:hover:text-rd-flashturq;
+}
+
+.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list .bp5-tab-indicator-wrapper .bp5-tab-indicator {
+    @apply bg-rd-lightgrey/30;
+}
+
+.commonTabs .bp5-tab-list>*:not(:last-child) {
+    @apply mr-0;
+}
+
+.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-panel {
+    @apply mt-0 pl-0;
+}
+
+.commonTabs .bp5-tab-panel {
+    @apply dark:bg-rd-dark mt-0 bg-white;
+}
+
+.commonTabs .bp5-tab-list {
+    @apply dark:bg-rd-dark sticky top-0 z-10 h-fit w-full overflow-auto bg-white md:w-auto md:overflow-hidden;
+}
+
+#dashboard .bp5-tab {
+    @apply !overflow-x-hidden;
+}
+
+#dashboard .bp5-tabs {
+    @apply flex h-full min-h-0;
+}
+
+#dashboard .bp5-tab-panel {
+    @apply h-full min-h-0 overflow-hidden;
+}
+
+#tabList .commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list .bp5-tab-indicator-wrapper .bp5-tab-indicator {
+    @apply bg-rd-lightgrey/30 group-hover:bg-rd-lightgrey/50 w-[88%] rounded-lg;
+}
+
+.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list {
+    @apply h-full min-h-0 border-r-[1px] border-[#b6c4c440] pt-0;
+}
+
+#previewTab .commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list {
+    @apply overflow-y-auto;
+}
+
+#tabList .commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list {
+    @apply h-full min-h-0 overflow-y-auto;
+}
+
+#tabList .databaseTabs.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list {
+    /* WHY: Keep Database sidebar width stable so sticky controls and scrollbar stay visually aligned. */
+    @apply h-full min-h-0 w-full overflow-x-hidden md:w-96 md:shrink-0;
+    scrollbar-gutter: stable;
+}
+
+#tabList .demoList.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list,
+#tabList .projectList.commonTabs .bp5-tabs.bp5-vertical>.bp5-tab-list {
+    @apply dark:border-rd-lightgrey/30 rounded-xl border p-2;
+    overflow-x: hidden;
+}
+
+#tabList .demoList.commonTabs .bp5-tab-panel {
+    /* WHY: Demo cards should never create horizontal scrollbars when the sidebar tab list grows. */
+    @apply w-full min-w-0 overflow-x-hidden;
+}
+
+#tabList .projectList.commonTabs .bp5-tab-panel {
+    /* WHY: Project list/grid panel must fill the available width; avoid shrink-to-content when toggling views. */
+    @apply w-full min-w-0 overflow-x-hidden;
+}
+
+.projectSettingsTab {
+    @apply mt-0;
+}
+
+.FileTree .bp5-spinner .bp5-spinner-head {
+    @apply stroke-rd-white;
+}
+
+/* Tree */
+.bp5-tree-node.bp5-tree-node-selected>.bp5-tree-node-content {
+    background-color: var(--rd-bp-primary);
+    color: var(--rd-bp-tree-selected-text);
+}
+
+.dark .bp5-tree-node.bp5-tree-node-selected>.bp5-tree-node-content {
+    background-color: var(--rd-bp-primary);
+    color: var(--rd-bp-tree-selected-text);
+}
+
+.bp5-tree-node-content {
+    padding-left: calc(var(--bp-tree-depth, 0) * var(--tree-indent-base, 5px));
+}
+
+.bp5-tree-node-content.bp5-tree-node-content-0 {
+    --bp-tree-depth: 0;
+}
+
+.bp5-tree-node-content.bp5-tree-node-content-1 {
+    --bp-tree-depth: 1;
+}
+
+.bp5-tree-node-content.bp5-tree-node-content-2 {
+    --bp-tree-depth: 2;
+}
+
+.bp5-tree-node-content.bp5-tree-node-content-3 {
+    --bp-tree-depth: 3;
+}
+
+.bp5-tree-node-content.bp5-tree-node-content-4 {
+    --bp-tree-depth: 4;
+}
+
+.bp5-tree-node-content.bp5-tree-node-content-5 {
+    --bp-tree-depth: 5;
+}
+
+.bp5-tree-node-caret-none {
+    min-width: 10px;
+}
+
+/* Breadcrumbs & shared Blueprint helpers */
+.bp5-breadcrumb.bp5-breadcrumb-current {
+    @apply text-rd-darkblue dark:text-rd-white;
+}
+
+.pretty-json-container.object-container {
+    @apply dark:bg-transparent;
+}
+
+.databasePanel {
+    /* WHY: Database workbench should consume the tab-panel height and keep only inner sections scrollable. */
+    @apply h-full min-h-0 overflow-hidden;
+}
+
+div[role="columnheader"]:hover {
+    @apply text-rd-blue dark:text-rd-flashturq;
+}

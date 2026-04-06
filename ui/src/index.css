@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './blueprint-overrides.css';
+/* Base styles */
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  body {
+    @apply text-rd-darkblue;
+  }
+}
+
+*:focus {
+  outline: none !important;
+}
+
+.oss-drawer-portal {
+  z-index: 10000;
+}
+
+/* Auth Pages */
+.auth .input-invalid input {
+  @apply border-rd-flashred border;
+}
+
+.li::after {
+  @apply block h-10 w-3;
+}
+
+.truncate-text {
+  @apply inline-block max-w-[450px] overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+/* ========================================= */
+/* NOTIFICATION CLASSES */
+/* ========================================= */
+
+.notiWrap {
+  @apply bg-rd-white mx-auto w-fit min-w-[20rem] overflow-auto rounded-lg border px-3 py-2 shadow-xl md:w-[20rem] md:min-w-[15rem] lg:w-[25rem];
+}
+
+.notiFlex {
+  @apply relative flex h-fit w-fit justify-end;
+}
+
+.iconWrap {
+  @apply text-2xl flex items-center justify-between px-4 py-1;
+}
+
+.decorNoti {
+  @apply absolute top-0 left-0 my-auto h-full w-1 rounded-[2px];
+}
+
+.notiTitle {
+  @apply text-rd-darkblue mb-1 text-sm font-semibold;
+}
+
+.notiMessage {
+  @apply text-rd-turquoise m-0 w-full text-sm;
+}
+
+/* INTERACTIVE PDF REDACTION CLASSES         */
+/* the anonymize will be Dark Blue */
+.Highlight__part {
+  @apply !bg-rd-darkblue !opacity-100 rounded-sm;
+}
+
+/* hide the default underline of the library */
+.Highlight__part:first-of-type {
+  border: none !important;
+}
+
+/* the icon will be white */
+.Highlight__emoji {
+  @apply bg-white border border-rd-lightgrey shadow-sm rounded-full p-1 text-sm;
+}

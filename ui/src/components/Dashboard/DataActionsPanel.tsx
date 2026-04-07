@@ -1,29 +1,84 @@
-import React, { useState } from 'react';
-import { FaDownload, FaFilter, FaSearch, FaChartBar, FaTable } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaDownload, FaFilter, FaSearch, FaChartBar, FaTable, FaSync } from 'react-icons/fa';
 
-const MOCK_DATA = [
-  { id: '1', date: '2026-04-01', product: 'Cotton Yarn 40s', company: 'Apex Textile', qty: '15,000 kg', status: 'Completed' },
-  { id: '2', date: '2026-04-02', product: 'Polyester Fabric', company: 'Global Weavers', qty: '25,000 m', status: 'Pending' },
-  { id: '3', date: '2026-04-03', product: 'Denim Raw', company: 'BlueJeans Co.', qty: '5,000 m', status: 'Processing' },
-  { id: '4', date: '2026-04-04', product: 'Linen Blend', company: 'EcoFabrics Ltd', qty: '12,500 kg', status: 'Completed' },
-  { id: '5', date: '2026-04-05', product: 'Silk Thread', company: 'Apex Textile', qty: '800 kg', status: 'Pending' },
-];
+interface TradeRecord {
+  id: number;
+  date: string;
+  importer: string;
+  hs_code: string;
+  product: string;
+  quantity: number;
+  quantity_unit: string;
+  value: number;
+  value_unit: string;
+  unit_price: number;
+}
 
 const DataActionsPanel: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isExporting, setIsExporting] = useState(false);
+  const [tradeData, setTradeData] = useState<TradeRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleExport = () => {
-    setIsExporting(true);
-    // Mock API Call for exporting
-    setTimeout(() => {
-      setIsExporting(false);
-      alert('Đã tải xuống báo cáo thành công!');
-    }, 1500);
+  const fetchTradeData = async () => {
+    setIsLoading(true);
+    setErrorMsg('');
+    try {
+      // Gọi lên Backend (thông qua Vite Proxy /api -> 8000)
+      const res = await fetch(`/api/data/?limit=100`, { 
+        method: 'GET',
+        credentials: 'include'
+      });
+      
+      if (res.status === 401) {
+        throw new Error('Vui lòng đăng nhập lại để xem dữ liệu (Hết phiên làm việc).');
+      }
+
+      if (!res.ok) throw new Error('Không thể tải dữ liệu từ máy chủ.');
+
+      const data = await res.json();
+      setTradeData(data.data || []);
+    } catch (error: any) {
+      console.error('Fetch error:', error);
+      setErrorMsg(error.message || 'Lỗi không xác định.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const filteredData = MOCK_DATA.filter((row) =>
-    Object.values(row).some((val) => val.toLowerCase().includes(searchTerm.toLowerCase()))
+  useEffect(() => {
+    fetchTradeData();
+  }, []);
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      const res = await fetch(`/api/data/export`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error('Xuất báo cáo thất bại.');
+      
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'exported_data.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+    } catch (err: any) {
+      alert(err.message || "Đã xảy ra lỗi khi tải file");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const filteredData = tradeData.filter((row) =>
+    Object.values(row).some((val) => 
+      String(val).toLowerCase().includes(searchTerm.toLowerCase())
+    )
   );
 
   return (
@@ -38,7 +93,7 @@ const DataActionsPanel: React.FC = () => {
             <input
               type="text"
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 outline-none transition-all shadow-inner"
-              placeholder="Tìm kiếm báo cáo, mặt hàng, công ty..."
+              placeholder="Gõ từ khóa tìm kiếm..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -49,82 +104,90 @@ const DataActionsPanel: React.FC = () => {
           </button>
         </div>
         
-        <button
-          onClick={handleExport}
-          disabled={isExporting}
-          className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-bold shadow-md shadow-emerald-600/20 hover:bg-emerald-500 hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-        >
-          <FaDownload size={14} />
-          {isExporting ? 'Đang xuất...' : 'Xuất Báo Cáo'}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={fetchTradeData}
+            disabled={isLoading}
+            className="flex items-center gap-2 px-4 py-2.5 bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-sm font-bold shadow-sm hover:bg-blue-200 transition-all disabled:opacity-70 disabled:cursor-wait"
+          >
+            <FaSync size={14} className={isLoading ? 'animate-spin' : ''} />
+            Refresh Data
+          </button>
+          
+          <button
+            onClick={handleExport}
+            disabled={isExporting}
+            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-bold shadow-md shadow-emerald-600/20 hover:bg-emerald-500 hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            <FaDownload size={14} />
+            {isExporting ? 'Đang xuất...' : 'Xuất Excel'}
+          </button>
+        </div>
       </div>
 
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         
-        {/* Chart Placeholder Box */}
-        <div className="w-full h-64 bg-white border border-gray-200 rounded-xl shadow-sm p-5 flex flex-col relative overflow-hidden group hover:border-blue-300 transition-colors">
-            <div className="flex items-center gap-2 mb-4 text-slate-800 font-bold">
-                <FaChartBar className="text-blue-600" />
-                <h3>Tổng Quan Giao Dịch</h3>
-            </div>
-            <div className="flex-1 flex items-center justify-center border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
-               <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                      <FaChartBar size={28} />
-                  </div>
-                  <p className="text-sm font-semibold text-gray-500">Khu vực biểu đồ dữ liệu</p>
-                  <p className="text-xs text-gray-400 mt-1">Biểu đồ sẽ được AI generate tự động tại đây</p>
-               </div>
-            </div>
-        </div>
+        {/* Error Notification */}
+        {errorMsg && (
+          <div className="p-4 bg-red-100 text-red-700 border border-red-300 rounded-xl text-sm font-medium shadow-sm">
+            {errorMsg}
+          </div>
+        )}
 
         {/* Data Grid Table */}
-        <div className="w-full bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-           <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2 text-slate-800 font-bold bg-slate-50/50">
-                <FaTable className="text-emerald-600" />
-                <h3>Chi tiết Dữ Liệu crawl gần nhất</h3>
+        <div className="w-full bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col min-h-[400px]">
+           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-2 text-slate-800 font-bold bg-slate-50/50 shrink-0">
+                <div className="flex items-center gap-2">
+                    <FaTable className="text-emerald-600" />
+                    <h3>Chi tiết Dữ Liệu XNK (Database)</h3>
+                </div>
+                {isLoading && <span className="text-xs text-slate-500 italic block">Đang kết nối Backend...</span>}
             </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            
+          <div className="overflow-x-auto flex-1">
+            <table className="w-full text-left border-collapse whitespace-nowrap">
               <thead>
-                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider font-semibold border-b border-gray-200">
-                  <th className="px-6 py-4">Mã tham chiếu</th>
-                  <th className="px-6 py-4">Ngày</th>
-                  <th className="px-6 py-4">Hàng hóa</th>
-                  <th className="px-6 py-4">Công ty đối tác</th>
-                  <th className="px-6 py-4">Số lượng</th>
-                  <th className="px-6 py-4">Trạng thái</th>
+                <tr className="bg-gray-50 text-gray-500 text-[11px] uppercase tracking-wider font-bold border-b border-gray-200">
+                  <th className="px-4 py-3">ID</th>
+                  <th className="px-4 py-3">Ngày (Date)</th>
+                  <th className="px-4 py-3 min-w-[200px]">Đơn vị NK (Importer)</th>
+                  <th className="px-4 py-3 font-mono text-center">HS Code</th>
+                  <th className="px-4 py-3 min-w-[250px]">Hàng hóa (Product)</th>
+                  <th className="px-4 py-3 text-right">Khối lượng</th>
+                  <th className="px-4 py-3 text-right">Giá trị</th>
+                  <th className="px-4 py-3 text-right">Đơn giá</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {filteredData.length > 0 ? (
                   filteredData.map((row, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50/80 transition-colors text-sm text-gray-700">
-                      <td className="px-6 py-4 font-mono font-medium text-slate-500">#{row.id}</td>
-                      <td className="px-6 py-4">{row.date}</td>
-                      <td className="px-6 py-4 font-semibold text-slate-800">{row.product}</td>
-                      <td className="px-6 py-4">{row.company}</td>
-                      <td className="px-6 py-4">{row.qty}</td>
-                      <td className="px-6 py-4">
-                        <span
-                          className={`px-3 py-1 text-[11px] font-bold uppercase rounded-full tracking-wide ${
-                            row.status === 'Completed'
-                              ? 'bg-emerald-100 text-emerald-700'
-                              : row.status === 'Pending'
-                              ? 'bg-amber-100 text-amber-700'
-                              : 'bg-blue-100 text-blue-700'
-                          }`}
-                        >
-                          {row.status}
-                        </span>
+                    <tr key={row.id || idx} className="hover:bg-slate-50/80 transition-colors text-sm text-gray-700">
+                      <td className="px-4 py-3 font-mono font-medium text-slate-400">#{row.id}</td>
+                      <td className="px-4 py-3 font-medium">{row.date}</td>
+                      <td className="px-4 py-3">
+                         <div className="truncate max-w-[200px]" title={row.importer}>{row.importer}</div>
+                      </td>
+                      <td className="px-4 py-3 font-mono font-semibold text-blue-600 text-center">{row.hs_code}</td>
+                      <td className="px-4 py-3">
+                         <div className="truncate max-w-[250px] whitespace-normal line-clamp-2 leading-relaxed" title={row.product}>{row.product}</div>
+                      </td>
+                      <td className="px-4 py-3 text-right font-medium text-slate-800">
+                         {row.quantity ? row.quantity.toLocaleString() : '-'} <span className="text-xs text-slate-500">{row.quantity_unit}</span>
+                      </td>
+                      <td className="px-4 py-3 text-right font-bold text-emerald-600">
+                         {row.value ? row.value.toLocaleString() : '-'} <span className="text-xs text-emerald-800">{row.value_unit}</span>
+                      </td>
+                      <td className="px-4 py-3 text-right text-slate-600 font-mono text-xs">
+                         {row.unit_price ? row.unit_price.toLocaleString() : '-'}
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-gray-500 text-sm">
-                      Không tìm thấy dữ liệu phù hợp.
+                    <td colSpan={8} className="px-6 py-20 text-center flex-col items-center flex text-gray-500 text-sm">
+                      <FaTable className="text-gray-300 mb-3" size={32} />
+                      {isLoading ? 'Đang tải dữ liệu...' : 'Không có dữ liệu trong Database. Thử gọi AI tải dữ liệu nhé!'}
                     </td>
                   </tr>
                 )}
@@ -132,12 +195,12 @@ const DataActionsPanel: React.FC = () => {
             </table>
           </div>
           {/* Simple Pagination Footer Placeholder */}
-          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-sm text-gray-600">
-             <span>Hiển thị 1 đến {filteredData.length} của {MOCK_DATA.length} kết quả</span>
+          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-sm text-gray-600 shrink-0">
+             <span>Hiển thị 1 đến {filteredData.length} của {tradeData.length} kết quả</span>
              <div className="flex gap-1">
-                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50">Trước</button>
+                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50" disabled>Trước</button>
                  <button className="px-3 py-1 bg-blue-600 text-white rounded shadow-sm">1</button>
-                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50">Sau</button>
+                 <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50" disabled>Sau</button>
              </div>
           </div>
         </div>

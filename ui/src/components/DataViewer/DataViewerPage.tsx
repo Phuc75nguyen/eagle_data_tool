@@ -1,44 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaSignOutAlt, FaRocket, FaDatabase, FaCog, FaHistory, FaUserCircle } from "react-icons/fa";
-import { fetchWithAuth } from "../../utils/api";
-import AIChatPanel from "./AIChatPanel";
-import CompanyListPanel from "./CompanyListPanel";
+import {
+    FaArrowLeft, FaRocket, FaDatabase, FaUserCircle,
+    FaSignOutAlt, FaRobot
+} from "react-icons/fa";
+import DataActionsPanel from "../Dashboard/DataActionsPanel";
 
-const Dashboard: React.FC = () => {
+const DataViewerPage: React.FC = () => {
     const navigate = useNavigate();
-    const [userName, setUserName] = useState("");
-    const [credits, setCredits] = useState<number>(0);
-    const [showCompanyPanel, setShowCompanyPanel] = useState(false);
-
-    useEffect(() => {
-        const email = sessionStorage.getItem("userEmail");
-        const name = sessionStorage.getItem("userName");
-
-        if (!email) {
-            navigate("/login");
-            return;
-        }
-        setUserName(name || "User");
-
-        const loadProfile = async () => {
-            try {
-                const res = await fetchWithAuth(
-                    `${import.meta.env.VITE_API_BASE_URL || ''}/api/profile`
-                );
-                if (res.ok) {
-                    const data = await res.json();
-                    setCredits(data.credits || 0);
-                    setUserName(
-                        `${data.first_name || ''} ${data.last_name || ''}`.trim() || name || "User"
-                    );
-                }
-            } catch (err) {
-                console.error("Could not fetch profile:", err);
-            }
-        };
-        loadProfile();
-    }, [navigate]);
+    const userName = sessionStorage.getItem("userName") || "User";
 
     const handleLogout = () => {
         sessionStorage.clear();
@@ -60,32 +30,25 @@ const Dashboard: React.FC = () => {
                     </span>
                 </div>
 
-                {/* Menu items */}
+                {/* Menu */}
                 <nav className="flex-1 overflow-y-auto p-3 space-y-2">
                     <button
                         onClick={() => navigate('/dashboard')}
-                        className="flex items-center gap-4 w-full p-3 bg-blue-600/10 text-blue-500 rounded-xl font-bold border border-blue-500/20"
+                        className="flex items-center gap-4 w-full p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl font-medium transition-colors"
                     >
-                        <FaDatabase size={18} className="shrink-0" />
+                        <FaRobot size={18} className="shrink-0" />
                         <span className="hidden md:block text-sm whitespace-nowrap">AI Assistant</span>
                     </button>
                     <button
                         onClick={() => navigate('/data-viewer')}
-                        className="flex items-center gap-4 w-full p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl font-medium transition-colors"
+                        className="flex items-center gap-4 w-full p-3 bg-emerald-600/10 text-emerald-400 rounded-xl font-bold border border-emerald-500/20"
                     >
-                        <FaHistory size={18} className="shrink-0" />
+                        <FaDatabase size={18} className="shrink-0" />
                         <span className="hidden md:block text-sm whitespace-nowrap">Data Viewer</span>
-                    </button>
-                    <button
-                        onClick={() => setShowCompanyPanel(true)}
-                        className="flex items-center gap-4 w-full p-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl font-medium transition-colors"
-                    >
-                        <FaCog size={18} className="shrink-0" />
-                        <span className="hidden md:block text-sm whitespace-nowrap">Danh sách công ty</span>
                     </button>
                 </nav>
 
-                {/* User profile pinned at bottom */}
+                {/* User profile */}
                 <div className="mt-auto p-4 border-t border-slate-800 shrink-0">
                     <div className="relative group cursor-pointer">
                         <div className="flex flex-col md:flex-row items-center gap-3 p-3 bg-slate-800/40 rounded-xl border border-slate-700/50 hover:bg-slate-800 transition-colors">
@@ -94,7 +57,6 @@ const Dashboard: React.FC = () => {
                             </div>
                             <div className="hidden md:flex flex-col flex-1 min-w-0">
                                 <p className="text-sm font-bold text-slate-100 truncate">{userName}</p>
-                                <p className="text-[10px] text-amber-400 font-bold">{credits || '∞'} Credits</p>
                             </div>
                         </div>
                         <button
@@ -116,31 +78,37 @@ const Dashboard: React.FC = () => {
 
             {/* ── MAIN CONTENT ── */}
             <main className="flex-1 flex flex-col min-w-0 h-full bg-[#0B1120] relative overflow-hidden">
-                {/* Ambient background glows */}
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none z-0" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[35%] h-[35%] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none z-0" />
+                {/* Ambient glows */}
+                <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none z-0" />
+                <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none z-0" />
 
                 {/* Header */}
-                <header className="h-16 border-b border-white/5 bg-slate-900/40 backdrop-blur-md flex items-center px-6 shrink-0 z-10">
-                    <div className="flex items-center gap-3">
-                        <h1 className="text-xl font-bold text-slate-100">AI Data Explorer</h1>
+                <header className="h-16 border-b border-white/5 bg-slate-900/40 backdrop-blur-md flex items-center justify-between px-6 shrink-0 z-10">
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => navigate('/dashboard')}
+                            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm font-semibold"
+                        >
+                            <FaArrowLeft size={14} />
+                            <span className="hidden sm:inline">Quay lại AI Chat</span>
+                        </button>
+                        <div className="w-px h-6 bg-slate-700" />
+                        <h1 className="text-xl font-bold text-slate-100">Data Viewer</h1>
                         <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
-                            Enterprise Edition
+                            11 Columns · Live
                         </span>
                     </div>
                 </header>
 
-                {/* Chat takes all remaining height */}
+                {/* DataActionsPanel fills the rest */}
                 <div className="flex-1 overflow-hidden p-3 lg:p-5 z-10">
-                    <div className="h-full rounded-xl overflow-hidden border border-slate-700/50 shadow-2xl">
-                        <AIChatPanel />
+                    <div className="h-full rounded-xl overflow-hidden border border-slate-700/30 shadow-2xl">
+                        <DataActionsPanel />
                     </div>
                 </div>
             </main>
-
-            <CompanyListPanel isOpen={showCompanyPanel} onClose={() => setShowCompanyPanel(false)} />
         </div>
     );
 };
 
-export default Dashboard;
+export default DataViewerPage;

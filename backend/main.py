@@ -5,6 +5,8 @@ from app.core.database import engine, Base
 from app.api.routes_auth import router as auth_router
 from app.api.routes_chat import router as chat_router
 from app.api.routes_data import router as data_router
+from app.api.routes_config import router as config_router
+from app.services.scheduler_service import start_scheduler, stop_scheduler
 
 # Thiết lập logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -27,6 +29,15 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(chat_router)
 app.include_router(data_router)
+app.include_router(config_router)
+
+@app.on_event("startup")
+def on_startup():
+    start_scheduler()
+
+@app.on_event("shutdown")
+def on_shutdown():
+    stop_scheduler()
 
 @app.get("/")
 def read_root():

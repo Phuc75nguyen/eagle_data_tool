@@ -6,3 +6,5 @@ PyYAML
 streamlit
 numpy
 xlrd
+python-multipart
+apscheduler

@@ -18,6 +18,7 @@ class ChatResponse(BaseModel):
     end: Optional[str] = None
     keyword: Optional[str] = None
     suggested_prompts: List[str] = []
+    data_ready: bool = False   # True when crawl is done and data is viewable
 
 @router.post("/", response_model=ChatResponse)
 async def process_chat(req: ChatRequest, background_tasks: BackgroundTasks):
